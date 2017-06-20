@@ -45,9 +45,35 @@ mongoClient.connect(url)
     })
     .then(collection => {
 
-        return collection.find({mark: 5}).toArray()
+        return collection.find().toArray()
             .then(result => {
-                console.log('Обновленные записи');
+                console.log('Коллекция после обновления');
+                console.log(result);
+                return collection;
+            })
+            .catch(err => {
+                throw err.message;
+            })
+
+    })
+    .then(collection => {
+
+        return collection.updateMany({mark: 5}, {'$unset':{name:true}})
+            .then(result => {
+                console.log('Удаление поля name');
+                console.log(result.result);
+                return collection;
+            })
+            .catch(err => {
+                throw err.message;
+            })
+
+    })
+    .then(collection => {
+
+        return collection.find().toArray()
+            .then(result => {
+                console.log('Коллекция после удаления имен');
                 console.log(result);
                 return collection;
             })
